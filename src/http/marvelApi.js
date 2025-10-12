@@ -2,7 +2,7 @@ import md5 from 'crypto-js/md5';
 
 const publicKey = 'f1bb218bae8b4ce7066c3e2b1162d935';
 const privateKey = '5dfa748254e651947a5f13922f8613c5ba6c8b4e';
-const baseUrl = 'http://gateway.marvel.com/v1/public';
+const baseUrl = 'https://gateway.marvel.com/v1/public';
 
 // Função para gerar o hash da autenticação
 const generateHash = () => {
@@ -12,19 +12,21 @@ const generateHash = () => {
 };
 
 // Função para buscar heróis
-export const fetchHeros = async (limit = 12) => {
+export const fetchHeros = async (limit = 12, offset = 0) => {
+  console.log('fetchHeros');
   const { timeStamp, hash } = generateHash();
 
-  const url = `${baseUrl}/characters?&limit=${limit}&ts=${timeStamp}&apikey=${publicKey}&hash=${hash}`;
+  const url = `${baseUrl}/characters?limit=${limit}&offset=${offset}&ts=${timeStamp}&apikey=${publicKey}&hash=${hash}`;
+  console.log(url);
 
   const res = await fetch(url);
   if (!res.ok) {
     throw new Error('Erro ao buscar heróis');
   }
+
   const data = await res.json();
   return data.data.results;
 };
-
 // Função para buscar detalhes de um herói
 export const fetchHeroDetails = async (heroId) => {
   const { timeStamp, hash } = generateHash();
@@ -60,7 +62,7 @@ export const fetchHeroComics =async(heroId) =>{
 
 //função para buscar comics
 
-export const fetchComics = async(limit=8) => {
+export const fetchComics = async(limit=12) => {
 
   const {timeStamp, hash} = generateHash();
 
@@ -71,7 +73,7 @@ export const fetchComics = async(limit=8) => {
     throw new Error('Erro ao buscar comics')
   }
   const data = await res.json();
-  console.log(data.data.results)
+
   return data.data.results;
 }
 

@@ -8,6 +8,7 @@ import ComicCard from '@/components/ComicCard.vue';
 const isLoading = ref(false);
 const results = ref([]);
 const selectedHeroDetails = ref(null);
+let limit = ref(12);
 
 // Função para carregar os heróis
 const loadHeros = async () => {
@@ -54,6 +55,20 @@ const voltarParaLista = () => {
 onMounted(() => {
     loadHeros();
 });
+
+// Carregar mais heróis
+const verMais = async () => {
+    limit.value += 12;
+    isLoading.value = true;
+    try {
+        const moreHeroes = await fetchHeros(limit.value);
+        results.value = [...results.value, ...moreHeroes]; // substitui a lista atual
+    } catch (error) {
+        console.error(error);
+    } finally {
+        isLoading.value = false;
+    }
+};
 </script>
 
 <template>
@@ -88,14 +103,57 @@ onMounted(() => {
             <HeroCard :imgSrc="`${hero.thumbnail.path}/standard_fantastic.${hero.thumbnail.extension}`" :nome="hero.name"/>
         </li>
     </ul>
-    <div class="loading" v-if="isLoading">
+    <div class="loading" v-if="isLoading && results.length === 0">
         <P>Loading...</P>
         <img src="../../public/images/loading.gif" alt="">
-    </div>     
+    </div>   
+    
+      
+
+    <div class="ver-mais" v-if="results.length > 0">
+        <div class="loading-ver-mais" v-if="isLoading">
+            <P>Loading...</P>
+            <img src="../../public/images/loading.gif" alt="">
+        </div> 
+        <div>
+            <button class="btn-ver-mais" @click="verMais">Ver mais</button>
+        </div>
+    </div>
+    
+    
     
 </template>
 
 <style scoped>
+    .btn-ver-mais{
+        background-color: #767676;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .btn-ver-mais:hover{
+        background-color: #000000;
+    }
+    .loading-ver-mais{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .ver-mais{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 30px;
+    }
+    .ver-mais img{
+        width: 30px;
+    }
+
+
     h1{
         font-size: 32px;
         font-weight: 700;
@@ -109,7 +167,7 @@ onMounted(() => {
         gap: 32px;
         max-width: 100%;
         flex-wrap: wrap;
-        overflow: hidden;
+        /* overflow: hidden; */
     }
     .heros li{
         cursor: pointer;
