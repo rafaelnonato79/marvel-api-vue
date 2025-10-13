@@ -72,55 +72,121 @@ const verMais = async () => {
         </div>
     </div>
 </template>
+
+
+
 <style scoped>
-
-    .btn-ver-mais{
-        background-color: #767676;
-        color: white;
-        border: none;
-        padding: 8px 16px;
-        border-radius: 4px;
-        cursor: pointer;
-    }
-    .btn-ver-mais:hover{
-        background-color: #000000;
-    }
-    .loading-ver-mais{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-    .ver-mais{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        padding: 30px;
-    }
-    .ver-mais img{
-        width: 30px;
-    }
-
- ul {
-    list-style: none;
-    padding: 32px 0 0 80px;
-    margin: 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 32px;
-    width: 100%; /* Garante que a ul não exceda a largura da tela */
-    box-sizing: border-box; /* Inclui padding e borda na largura total */
+/* ======== Estrutura principal ======== */
+ul.comics {
+  list-style: none;
+  padding: 32px 16px 0; /* removido padding-left fixo */
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 24px;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 li {
-    box-sizing: border-box;
-    width: 186px; /* Ajuste para o mesmo valor da largura da imagem */
-}
-.loading{
-    position: fixed;
-    left: 50%;
-    top: 50%;
+  width: 186px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
 }
 
+/* ======== Botão "Ver mais" ======== */
+.ver-mais {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.btn-ver-mais {
+  background-color: #767676;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-ver-mais:hover {
+  background-color: #000000;
+}
+
+.loading-ver-mais {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.ver-mais img {
+  width: 30px;
+}
+
+/* ======== Loading ======== */
+.loading {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.loading img {
+  width: 32px;
+}
+
+/* ======== Responsividade ======== */
+@media (max-width: 1024px) {
+  ul.comics {
+    gap: 20px;
+    padding: 24px;
+  }
+
+  li {
+    width: 160px;
+  }
+}
+
+@media (max-width: 768px) {
+  ul.comics {
+    gap: 16px;
+    padding: 16px;
+  }
+
+  li {
+    width: 45%; /* dois por linha */
+    max-width: 180px;
+  }
+
+  .btn-ver-mais {
+    padding: 8px 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  ul.comics {
+    gap: 12px;
+    padding: 8px;
+  }
+
+  li {
+    width: 100%;
+    max-width: 240px; /* centraliza o card */
+  }
+
+  .btn-ver-mais {
+    width: 100%;
+    max-width: 260px;
+  }
+}
 </style>
